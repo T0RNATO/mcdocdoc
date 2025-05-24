@@ -15,7 +15,7 @@ dispatch minecraft:item[foo] to struct MyFooItem {
 }
 ```
 
-Fortunately, it's even simpler for defining a struct that describes your nbt storage:
+It's even simpler for defining a struct that describes your nbt storage:
 ```mcdoc
 dispatch minecraft:storage["namespace:name"] to struct MyStorage {
     my_value: byte,
@@ -28,6 +28,11 @@ This describes a simple storage at the resource location `namespace:name` that l
     my_value: 1b, // or any other byte value
 }
 ```
+Since you're dispatching to the `minecraft:storage` registry, Spyglass will now autocomplete types inside your
+function files in your datapack that reference the storage at `namespace:name`. This is a really great way to
+catch errors before they happen ingame!
+
+## More Types
 Let's show a more advanced example that introduces some new types:
 ```mcdoc
 use ::java::util::text::Text // Types can be imported from the vanilla mcdoc
@@ -60,7 +65,7 @@ struct ParentStruct {
 Hopefully all of that is _fairly_ sensible. To work out where you can import things from like the `Text` in that example,
 there's unfortunately not really a better way than just looking through the vanilla-mcdoc repo, probably specifically [the `util` folder](https://github.com/SpyglassMC/vanilla-mcdoc/tree/main/java/util). 
 
-However, this isn't something you'd use all this much, and the only other one that you're likely to use is probably
+However, importing types isn't something you're likely to use all that much - the only other one that you're likely to use is probably
 `::java::world::item::ItemStack`, which is an ItemStack like `{id: "apple", components: {...}}`
 
 ## Attributes
@@ -72,7 +77,7 @@ struct Foo {
 ```
 Any registry name works inside `id`, like `block`, `function`, `loot_table`, `dimension`, `entity_type`, etc, etc.
 
-The other two attribute you may be interested in is `uuid`:
+The other attribute you may be interested in is `uuid`:
 ```mcdoc
 struct Bar {
     my_uuid: [#uuid] int[] @ 4, // Specifies that the list of four ints is a uuid.
